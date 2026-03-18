@@ -1,4 +1,4 @@
-
+﻿
 #!/bin/sh 
 #voir dans devguide pour utiliser les hooks car client side et pas server side
 #↑ fait que le script soit interprété en tant que shell par git
