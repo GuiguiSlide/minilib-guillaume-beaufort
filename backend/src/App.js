@@ -21,7 +21,7 @@ next(); // next() = passer au middleware/route suivant
 });
 // ── Routes ───────────────────────────────────────────────────────────
 // Toutes les routes de livres seront préfixées par /api/v1/livres
-app.use('/api/v1/v1/livres', livresRouter);
+app.use('/api/v1/livres', livresRouter);
 // Route de santé — permet de vérifier que le serveur tourne
 app.get('/health', (req, res) => {
 res.json({
