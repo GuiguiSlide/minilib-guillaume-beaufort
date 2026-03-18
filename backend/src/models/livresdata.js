@@ -77,7 +77,7 @@ disponible: true, // un nouveau livre est disponible par défaut
 livres.push(nouveau);
 return nouveau;
 };
-/**
+/** 
 * Met à jour un livre existant.
 *
 * @param {number} id - L'id du livre à modifier
