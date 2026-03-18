@@ -5,6 +5,7 @@ msg_file="$1" # contiens le message de commit que tu as écris dans ton éditeur
 msg=$(cat "$msg_file") # stock le message de commit dans une variable cat lis le fichiers et $() permet de stocker le résultat de la commande dans une variable
 #pattern='^(feat|fix|docs|refactor|chore): .+' # définit la regle a respecter il dit que le message doit commencer par (...) suivi de : doit avoir un escpace puis un charactère ou une chaine de charactère
 pattern='^(feat|fix|docs|style|refactor|test|chore)\([a-zA-Z0-9_-]+\): .+' #meme pattern sauf qu'on rajoute un scope
+
 # ^ = début du message
 # (feat|fix|docs|...) = un de ces mots est autorisé
 # : = il faut deux-points
@@ -13,7 +14,7 @@ pattern='^(feat|fix|docs|style|refactor|test|chore)\([a-zA-Z0-9_-]+\): .+' #meme
 
 if ! echo "$msg" | grep -Eq "$pattern"; then # est ce que le message correspond au pattern demandé ?
     echo "Message de commit invalide."
-    echo "le message doit être au format : type: description" # echo est le message envoyé si le pattern n'est pas respecté
+    echo "le message doit être au format : type(scope): description" # echo est le message envoyé si le pattern n'est pas respecté
     exit 1 # bloque ton commit
 fi # en shell if se termine par fi
 
