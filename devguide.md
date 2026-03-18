@@ -27,3 +27,5 @@ minilib/
 git config core.hooksPath .githooks
 # ça vas dire a git de chercher les githooks dans le dossier .githooks
 # ces githooks la vont servir pour surveiller les commits et leurs formattages
+
+dans backend package.json "main": "index.js" peut poser probleme
