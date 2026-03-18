@@ -3,8 +3,8 @@
 
 msg_file="$1" # contiens le message de commit que tu as écris dans ton éditeur dans le terminal
 msg=$(cat "$msg_file") # stock le message de commit dans une variable cat lis le fichiers et $() permet de stocker le résultat de la commande dans une variable
-pattern='^(feat|fix|docs|refactor|chore): .+' # définit la regle a respecter il dit que le message doit commencer par (...) suivi de : doit avoir un escpace puis un charactère ou une chaine de charactère
-
+#pattern='^(feat|fix|docs|refactor|chore): .+' # définit la regle a respecter il dit que le message doit commencer par (...) suivi de : doit avoir un escpace puis un charactère ou une chaine de charactère
+pattern='^(feat|fix|docs|style|refactor|test|chore)\([a-zA-Z0-9_-]+\): .+' #meme pattern sauf qu'on rajoute un scope
 # ^ = début du message
 # (feat|fix|docs|...) = un de ces mots est autorisé
 # : = il faut deux-points
@@ -17,4 +17,4 @@ if ! echo "$msg" | grep -Eq "$pattern"; then # est ce que le message correspond 
     exit 1 # bloque ton commit
 fi # en shell if se termine par fi
 
-exit 0 # si le message est valide, le commit est autorisé 
+exit 0 # si le message est valide, le commit est autorisé (en bonne pratique en fin de script on mets return au lieu de exit pour pas tout casser si jamais on veut réutiliser ce script dans un autre contexte) 
