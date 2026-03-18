@@ -1,6 +1,6 @@
-#voir dans devguide pour utiliser les hooks car client side et pas server side
 
 #!/bin/sh 
+#voir dans devguide pour utiliser les hooks car client side et pas server side
 #↑ fait que le script soit interprété en tant que shell par git
 
 msg_file="$1" # contiens le message de commit que tu as écris dans ton éditeur dans le terminal
