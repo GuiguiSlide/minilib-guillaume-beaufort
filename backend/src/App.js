@@ -12,8 +12,7 @@ const PORT = process.env.PORT || 5000;
 // ── Middlewares globaux ───────────────────────────────────────────────
 // cors() : autorise les requêtes cross-origin (React sur port 3000 → API sur 5000)
 app.use(cors());
-// express.json() : parse automatiquement le body JSON des requêtes
-POST/PUT
+// express.json() : parse automatiquement le body JSON des requêtes POST/PUT
 app.use(express.json());
 // Middleware de logging minimaliste — affiche chaque requête reçue
 app.use((req, res, next) => {
