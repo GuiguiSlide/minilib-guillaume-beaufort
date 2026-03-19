@@ -13,21 +13,30 @@
 */
 /** @type {Livre[]} */
 let livres = [
-{ id: 1, isbn: '9780132350884', titre: 'Clean Code',
-auteur: 'Robert C. Martin', annee: 2008, genre: 'Informatique',
-disponible: true },
-{ id: 2, isbn: '9780201633610', titre: 'Design Patterns',
-auteur: 'Gang of Four', annee: 1994, genre: 'Informatique', disponible:
-true },
-{ id: 3, isbn: '9782070612758', titre: 'Le Petit Prince',
-auteur: 'Antoine de Saint-Exupéry', annee: 1943, genre: 'Roman',
-disponible: false },
-{ id: 4, isbn: '9782070360024', titre: '1984',
-auteur: 'George Orwell', annee: 1949, genre: 'Roman', disponible: true
-},
-{ id: 5, isbn: '9780201485677', titre: 'The Pragmatic Programmer',
-auteur: 'Andrew Hunt', annee: 1999, genre: 'Informatique', disponible:
-true },
+    {
+        id: 1, isbn: '9780132350884', titre: 'Clean Code',
+        auteur: 'Robert C. Martin', annee: 2008, genre: 'Informatique',
+        disponible: true
+    },
+    {
+        id: 2, isbn: '9780201633610', titre: 'Design Patterns',
+        auteur: 'Gang of Four', annee: 1994, genre: 'Informatique', disponible:
+            true
+    },
+    {
+        id: 3, isbn: '9782070612758', titre: 'Le Petit Prince',
+        auteur: 'Antoine de Saint-Exupéry', annee: 1943, genre: 'Roman',
+        disponible: false
+    },
+    {
+        id: 4, isbn: '9782070360024', titre: '1984',
+        auteur: 'George Orwell', annee: 1949, genre: 'Roman', disponible: true
+    },
+    {
+        id: 5, isbn: '9780201485677', titre: 'The Pragmatic Programmer',
+        auteur: 'Andrew Hunt', annee: 1999, genre: 'Informatique', disponible:
+            true
+    },
 ];
 // Compteur pour générer des ids uniques
 let nextId = livres.length + 1;
@@ -41,18 +50,18 @@ let nextId = livres.length + 1;
 * @returns {Livre[]} Tableau de livres filtré
 */
 const findAll = (filtres = {}) => {
-const { genre, disponible, recherche } = filtres;
-return livres.filter(livre => {
-if (genre !== undefined && livre.genre !== genre) return false;
-if (disponible !== undefined && livre.disponible !== (disponible ===
-'true')) return false;
-if (recherche) {
-const t = recherche.toLowerCase();
-if (!livre.titre.toLowerCase().includes(t) &&
-!livre.auteur.toLowerCase().includes(t)) return false;
-}
-return true;
-});
+    const { genre, disponible, recherche } = filtres;
+    return livres.filter(livre => {
+        if (genre !== undefined && livre.genre !== genre) return false;
+        if (disponible !== undefined && livre.disponible !== (disponible ===
+            'true')) return false;
+        if (recherche) {
+            const t = recherche.toLowerCase();
+            if (!livre.titre.toLowerCase().includes(t) &&
+                !livre.auteur.toLowerCase().includes(t)) return false;
+        }
+        return true;
+    });
 };
 /**
 * Trouve un livre par son identifiant.
@@ -69,13 +78,13 @@ ni statut
 * @returns {Livre} Le livre créé avec son id et disponible = true
 */
 const create = (data) => {
-const nouveau = {
-id: nextId++,
-...data,
-disponible: true, // un nouveau livre est disponible par défaut
-};
-livres.push(nouveau);
-return nouveau;
+    const nouveau = {
+        id: nextId++,
+        ...data,
+        disponible: true, // un nouveau livre est disponible par défaut
+    };
+    livres.push(nouveau);
+    return nouveau;
 };
 /** 
 * Met à jour un livre existant.
@@ -85,11 +94,11 @@ return nouveau;
 * @returns {Livre|null} Le livre mis à jour, ou null si non trouvé
 */
 const update = (id, data) => {
-const idx = livres.findIndex(l => l.id === Number(id));
-if (idx === -1) return null;
-// Spread : on garde les données existantes et on écrase avec les nuvelles
-livres[idx] = { ...livres[idx], ...data };
-return livres[idx];
+    const idx = livres.findIndex(l => l.id === Number(id));
+    if (idx === -1) return null;
+    // Spread : on garde les données existantes et on écrase avec les nuvelles
+    livres[idx] = { ...livres[idx], ...data };
+    return livres[idx];
 };
 /**
 * Supprime un livre par son identifiant.
@@ -98,9 +107,9 @@ return livres[idx];
 * @returns {boolean} true si supprimé, false si non trouvé
 */
 const remove = (id) => {
-const avant = livres.length;
-livres = livres.filter(l => l.id !== Number(id));
-return livres.length < avant; // true si un élément a été retiré
+    const avant = livres.length;
+    livres = livres.filter(l => l.id !== Number(id));
+    return livres.length < avant; // true si un élément a été retiré
 };
 // Export de toutes les fonctions — pattern CommonJS
 export { findAll, findById, create, update, remove };

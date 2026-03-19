@@ -8,10 +8,10 @@ import * as controller from '../controllers/livresControllers.js';
 router.get('/', controller.getLivres);
 // GET /api/v1/livres/:id → détail d'un livre
 router.get('/recherche', (req, res) => {
-const { q } = req.query;
-if (!q) return res.status(400).json({ erreur: 'Paramètre q requis' });
-const resultats = livresModel.findAll({ recherche: q });
-res.json({ query: q, total: resultats.length, resultats });
+    const { q } = req.query;
+    if (!q) return res.status(400).json({ erreur: 'Paramètre q requis' });
+    const resultats = livresModel.findAll({ recherche: q });
+    res.json({ query: q, total: resultats.length, resultats });
 });
 // ⚠ Cette route doit être AVANT router.get('/:id') — sinon Express
 // interpréterait 'recherche' comme un id !
