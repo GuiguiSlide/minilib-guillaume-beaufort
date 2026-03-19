@@ -6,6 +6,7 @@ import cors from 'cors';
 // Node 24 : plus besoin de dotenv // charge les variables depuis .env
 // Import des routeurs (on les créera juste après)
 import livresRouter from './routes/livres.js';
+import adherentsRouter from './routes/adherents.js';
 // ── Initialisation de l'application Express ──────────────────────────
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,6 +23,11 @@ app.use((req, res, next) => {
 // ── Routes ───────────────────────────────────────────────────────────
 // Toutes les routes de livres seront préfixées par /api/v1/livres
 app.use('/api/v1/livres', livresRouter);
+
+// Toutes les routes d'adhérents seront préfixées par /api/v1/adherents
+app.use('/api/v1/adherents', adherentsRouter);
+
+
 // Route de santé — permet de vérifier que le serveur tourne
 app.get('/health', (req, res) => {
     res.json({
