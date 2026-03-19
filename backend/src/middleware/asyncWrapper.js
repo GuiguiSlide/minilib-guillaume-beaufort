@@ -5,5 +5,5 @@
 * @returns {Function} Handler avec gestion d'erreur automatique
 */
 const asyncWrapper = (fn) => (req, res, next) =>
-Promise.resolve(fn(req, res, next)).catch(next);
+    Promise.resolve(fn(req, res, next)).catch(next);
 export default asyncWrapper;
