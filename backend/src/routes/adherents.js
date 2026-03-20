@@ -1,5 +1,6 @@
 // backend/src/routes/adherents.js
 //le lien entre app.js et tout le code de la partie adherents
+//fonctionne comme le __init__.py en python et l'envois au controller les requetes qui arrivent sur la route /api/v1/adherents
 import express from 'express';
 import asyncWrapper from '../middleware/asyncWrapper.js';
 import * as controller from '../controllers/adherentsController.js';

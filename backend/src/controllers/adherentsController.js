@@ -1,4 +1,4 @@
-// gerer les adherents : get tous les adherents, get adherent par id, creer un adherent, desactiver un adherent
+// adherentcontroller sert a gerer les adherents : get tous les adherents, get adherent par id, creer un adherent, desactiver un adherent
 // backend/src/controllers/adherentsController.js
 import * as adherentsModel from '../models/adherentsModel.js';
 /** GET /api/v1/adherents */
