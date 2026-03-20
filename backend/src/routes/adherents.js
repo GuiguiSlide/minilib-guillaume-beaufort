@@ -4,6 +4,7 @@
 import express from 'express';
 import asyncWrapper from '../middleware/asyncWrapper.js';
 import * as controller from '../controllers/adherentsController.js';
+//router redirige les requetes vers les controllers en fonction de la route et de la méthode HTTP
 const router = express.Router();
 router.get('/', asyncWrapper(controller.getAdherents));
 router.get('/:id', asyncWrapper(controller.getAdherentById));
