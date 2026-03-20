@@ -62,8 +62,7 @@ export const findById = async (id) => {
 */
 export const create = async ({ isbn, titre, auteur, annee, genre }) => {
     const result = await pool.query(
-        `INSERT INTO livres (isbn, titre, auteur, annee, genre)
-VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+        `INSERT INTO livres (isbn, titre, auteur, annee, genre) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
         [isbn, titre, auteur, annee, genre]
         // RETURNING * retourne la ligne insérée — y compris l'id généré par SERIAL
     );

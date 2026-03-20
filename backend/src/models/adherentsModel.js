@@ -36,8 +36,7 @@ export const findById = async (id) => {
 export const create = async ({ nom, prenom, email }) => {
     const numero = await genererNumeroAdherent();
     const result = await pool.query(
-        `INSERT INTO adherents (numero_adherent, nom, prenom, email)
-VALUES ($1, $2, $3, $4) RETURNING *`,
+        `INSERT INTO adherents (numero_adherent, nom, prenom, email) VALUES ($1, $2, $3, $4) RETURNING *`,
         [numero, nom, prenom, email]
     );
     return result.rows[0];

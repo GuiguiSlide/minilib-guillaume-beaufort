@@ -1,4 +1,7 @@
 // backend/src/config/database.js
+// Connecter à la base de données PostgreSQL et charger les scripts JS.
+
+
 /**
 * Pool de connexions PostgreSQL partagé dans toute l'application.
 * Chargé via Node 24 : node --env-file=.env src/app.js

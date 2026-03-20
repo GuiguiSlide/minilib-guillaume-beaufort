@@ -1,3 +1,4 @@
+// gerer les livres : get tous les livres, get livre par id, creer un livre, modifier un livre, supprimer un livre
 // backend/src/controllers/livresController.js — version async + PostgreSQL
 import * as livresModel from '../models/livresModel.js';
 /**
