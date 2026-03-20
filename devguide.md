@@ -23,9 +23,7 @@ minilib/
 ├── docker-compose.yml ← Orchestration des 3 services
 └── README.md
 
-# pour utiliser les githooks il faut utiliser la commande
-git config core.hooksPath .githooks
-# ça vas dire a git de chercher les githooks dans le dossier .githooks
-# ces githooks la vont servir pour surveiller les commits et leurs formattages
+les githooks ne fonctionnent pas
+
 
 dans backend package.json "main": "index.js" peut poser probleme
