@@ -1,7 +1,6 @@
 -- database/schema.sql
 -- Schéma BDD MiniLib — PostgreSQL 18
--- Compatible PostgreSQL 12+. Exécuter avec : psql -U minilib_user -d
-minilib -f database/schema.sql
+-- Compatible PostgreSQL 12+. Exécuter avec : psql -U minilib_user -d minilib -f database/schema.sql
 -- Suppression dans l'ordre inverse des dépendances (pour reset propre)
 DROP TABLE IF EXISTS emprunts;
 DROP TABLE IF EXISTS livres;

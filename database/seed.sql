@@ -1,7 +1,6 @@
 -- database/seed.sql
 -- Données de test MiniLib
--- Exécuter après schema.sql : psql -U minilib_user -d minilib -f
-database/seed.sql
+-- Exécuter après schema.sql : psql -U minilib_user -d minilib -fdatabase/seed.sql
 INSERT INTO livres (isbn, titre, auteur, annee, genre) VALUES
 ('9780132350884', 'Clean Code', 'Robert C. Martin', 2008,
 'Informatique'),
