@@ -50,8 +50,7 @@ export const findAll = async (filtres = {}) => {
 * @returns {Promise<Object|null>} Livre ou null
 */
 export const findById = async (id) => {
-    const result = await pool.query('SELECT * FROM livres WHERE id = $1',
-        [id]);
+    const result = await pool.query('SELECT * FROM livres WHERE id = $1', [id]);
     return result.rows[0] || null;
 };
 /**
@@ -62,8 +61,7 @@ export const findById = async (id) => {
 */
 export const create = async ({ isbn, titre, auteur, annee, genre }) => {
     const result = await pool.query(
-        `INSERT INTO livres (isbn, titre, auteur, annee, genre) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-        [isbn, titre, auteur, annee, genre]
+        `INSERT INTO livres (isbn, titre, auteur, annee, genre) VALUES ($1, $2, $3, $4, $5) RETURNING *`, [isbn, titre, auteur, annee, genre]
         // RETURNING * retourne la ligne insérée — y compris l'id généré par SERIAL
     );
     return result.rows[0];
@@ -82,9 +80,7 @@ export const update = async (id, data) => {
     if (champs.length === 0) return findById(id);
     const setClause = champs.map((c, i) => `${c} = $${i + 1}`).join(', ');
     const result = await pool.query(
-        `UPDATE livres SET ${setClause} WHERE id = $${champs.length + 1}
-RETURNING *`,
-        [...valeurs, id]
+        `UPDATE livres SET ${setClause} WHERE id = $${champs.length + 1} RETURNING *`, [...valeurs, id]
     );
     return result.rows[0] || null;
 };
