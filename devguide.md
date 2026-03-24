@@ -1,4 +1,5 @@
 minilib/
+| **l'intéraction clients/l'interface utilisateurs**
 ├── frontend/ ← Application React
 │ ├── src/
 │ │ ├── components/ ← Composants réutilisables (BookCard, Modal...)
@@ -6,7 +7,7 @@ minilib/
 │ │ ├── services/ ← Appels API (api.js, bookService.js...)
 │ │ └── App.jsx
 │ └── package.json
-│
+│ **la connection entre la database et le frontend**
 ├── backend/ ← API Node.js / Express
 │ ├── src/
 │ │ ├── controllers/ ← Logique de traitement des requêtes
@@ -15,7 +16,8 @@ minilib/
 │ │ ├── middleware/ ← Validation, gestion erreurs, auth
 │ │ └── app.js ← Point d'entrée Express
 │ └── package.json
-│
+│ **la ou on enregistre les données**
+|  # ici c'est juste un dossier pour les scripts sql pour la bdd
 ├── database/
 │ ├── schema.sql ← Création des tables
 │ └── seed.sql ← Données de test
@@ -23,7 +25,5 @@ minilib/
 ├── docker-compose.yml ← Orchestration des 3 services
 └── README.md
 
-les githooks ne fonctionnent pas
+# bruno c'est un faux frontend pour tester le backend
 
-
-dans backend package.json "main": "index.js" peut poser probleme

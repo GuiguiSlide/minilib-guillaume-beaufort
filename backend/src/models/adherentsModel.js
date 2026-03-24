@@ -23,8 +23,8 @@ export const findAll = async () => {
 };
 /** @async @param {number} id @returns {Promise<Object|null>} */
 export const findById = async (id) => {
-    const result = await pool.query('SELECT * FROM adherents WHERE id = $1',
-        [id]);
+    const result = await pool.query('SELECT * FROM adherents WHERE id = $1', [id]
+    );
     return result.rows[0] || null;
 };
 /**
@@ -36,8 +36,7 @@ export const findById = async (id) => {
 export const create = async ({ nom, prenom, email }) => {
     const numero = await genererNumeroAdherent();
     const result = await pool.query(
-        `INSERT INTO adherents (numero_adherent, nom, prenom, email) VALUES ($1, $2, $3, $4) RETURNING *`,
-        [numero, nom, prenom, email]
+        `INSERT INTO adherents (numero_adherent, nom, prenom, email) VALUES ($1, $2, $3, $4) RETURNING *`, [numero, nom, prenom, email]
     );
     return result.rows[0];
 };
@@ -49,8 +48,7 @@ export const create = async ({ nom, prenom, email }) => {
 */
 export const desactiver = async (id) => {
     const result = await pool.query(
-        'UPDATE adherents SET actif = false WHERE id = $1 RETURNING *',
-        [id]
+        'UPDATE adherents SET actif = false WHERE id = $1 RETURNING *', [id]
     );
     return result.rows[0] || null;
 };

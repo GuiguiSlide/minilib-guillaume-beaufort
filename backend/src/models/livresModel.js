@@ -35,11 +35,9 @@ export const findAll = async (filtres = {}) => {
         valeurs.push(`%${filtres.recherche}%`);
         idx++;
     }
-    const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` :
-        '';
+    const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
     const result = await pool.query(
-        `SELECT * FROM livres ${where} ORDER BY titre`,
-        valeurs
+        `SELECT * FROM livres ${where} ORDER BY titre`, valeurs
     );
     return result.rows;
 };
@@ -50,7 +48,8 @@ export const findAll = async (filtres = {}) => {
 * @returns {Promise<Object|null>} Livre ou null
 */
 export const findById = async (id) => {
-    const result = await pool.query('SELECT * FROM livres WHERE id = $1', [id]);
+    const result = await pool.query('SELECT * FROM livres WHERE id = $1', [id]
+    );
     return result.rows[0] || null;
 };
 /**
