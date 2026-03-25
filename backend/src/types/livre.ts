@@ -13,8 +13,7 @@ export interface Livre {
     disponible: boolean;
 }
 /**
-* Données pour créer un livre — sans id (SERIAL PostgreSQL) ni disponible
-(true par défaut).
+* Données pour créer un livre — sans id (SERIAL PostgreSQL) ni disponible (true par défaut).
 */
 export interface CreateLivreDto {
     isbn: string;

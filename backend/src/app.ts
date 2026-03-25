@@ -1,7 +1,7 @@
 // ─── backend/src/app.js ─────────────────────────────────────────────
 // Point d'entrée du serveur Express MiniLib
 // Démarre avec : npm run dev
-import express from 'express';
+import express, {Request, Response, NextFunction} from 'express';
 import cors from 'cors';
 // Node 24 : plus besoin de dotenv // charge les variables depuis .env
 // Import des routeurs (on les créera juste après)
@@ -50,14 +50,14 @@ app.use((req, res) => {
 });
 // Middleware de gestion des erreurs serveur (500)
 // Express reconnaît ce middleware à ses 4 paramètres (err en premier)
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
     console.error('Erreur serveur:', err.message);
     res.status(500).json({ erreur: 'Erreur interne du serveur' });
 });
 // À ajouter à la fin de app.js, avant app.listen
 // Express reconnaît ce middleware à ses 4 paramètres (err, req, res, next)
-app.use((err, req, res, next) => {
-    const status = err.statusCode || 500;
+app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
+    const status = (err as any).statusCode || 500;
     const message = status === 500 ? 'Erreur interne du serveur' :
         err.message;
     if (status === 500) console.error('[ERREUR]', err.message);

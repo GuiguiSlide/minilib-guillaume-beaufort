@@ -53,8 +53,7 @@ const findAll = (filtres = {}) => {
     const { genre, disponible, recherche } = filtres;
     return livres.filter(livre => {
         if (genre !== undefined && livre.genre !== genre) return false;
-        if (disponible !== undefined && livre.disponible !== (disponible ===
-            'true')) return false;
+        if (disponible !== undefined && livre.disponible !== disponible) return false;
         if (recherche) {
             const t = recherche.toLowerCase();
             if (!livre.titre.toLowerCase().includes(t) &&
@@ -96,8 +95,7 @@ const create = (data) => {
 const update = (id, data) => {
     const idx = livres.findIndex(l => l.id === Number(id));
     if (idx === -1) return null;
-    // Spread : on garde les données existantes et on écrase avec les
-    nouvelles
+    // Spread : on garde les données existantes et on écrase avec les nouvelles
     livres[idx] = { ...livres[idx], ...data };
     return livres[idx];
 };

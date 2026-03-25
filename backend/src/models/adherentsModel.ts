@@ -3,6 +3,7 @@
 * Accès aux données adhérents via PostgreSQL.
 * @module adherentsModel
 */
+import { Adherent, CreateAdherentDto } from '../types/index.js';
 import pool from '../config/database.js';
 /**
 * Génère un numéro adhérent unique au format ADH-XXX.
@@ -22,7 +23,7 @@ export const findAll = async () => {
     return result.rows;
 };
 /** @async @param {number} id @returns {Promise<Object|null>} */
-export const findById = async (id) => {
+export const findById = async (id:number): Promise<Adherent|null> => {
     const result = await pool.query('SELECT * FROM adherents WHERE id = $1', [id]
     );
     return result.rows[0] || null;
@@ -33,7 +34,7 @@ export const findById = async (id) => {
 * @param {Object} data - { nom, prenom, email }
 * @returns {Promise<Object>} Adhérent créé
 */
-export const create = async ({ nom, prenom, email }) => {
+export const create = async ({ nom, prenom, email }: CreateAdherentDto): Promise<Adherent> => {
     const numero = await genererNumeroAdherent();
     const result = await pool.query(
         `INSERT INTO adherents (numero_adherent, nom, prenom, email) VALUES ($1, $2, $3, $4) RETURNING *`, [numero, nom, prenom, email]
@@ -46,7 +47,7 @@ export const create = async ({ nom, prenom, email }) => {
 * @param {number} id
 * @returns {Promise<Object|null>} Adhérent mis à jour
 */
-export const desactiver = async (id) => {
+export const desactiver = async (id:number): Promise<Adherent|null> => {
     const result = await pool.query(
         'UPDATE adherents SET actif = false WHERE id = $1 RETURNING *', [id]
     );
