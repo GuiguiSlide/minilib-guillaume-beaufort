@@ -3,8 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { CreateLivreDto } from '../types/index.js';
 /**
 * Middleware Express qui valide le body d'une requête POST/PUT livre.
-* S'utilise comme : router.post('/', validateLivre,
-controller.createLivre)
+* S'utilise comme : router.post('/', validateLivre, controller.createLivre)
 *
 * @param {import('express').Request} req
 * @param {import('express').Response} res
