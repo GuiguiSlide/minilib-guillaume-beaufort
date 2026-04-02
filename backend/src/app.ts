@@ -15,6 +15,11 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 // express.json() : parse automatiquement le body JSON des requêtes POST/PUT
 app.use(express.json());
+// ── UTF-8 header middleware ───────────────────────────────────────────
+app.use((req, res, next) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  next();
+});
 // Middleware de logging minimaliste — affiche chaque requête reçue
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);

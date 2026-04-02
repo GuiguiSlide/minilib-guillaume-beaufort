@@ -56,8 +56,7 @@ const findAll = (filtres = {}) => {
         if (disponible !== undefined && livre.disponible !== disponible) return false;
         if (recherche) {
             const t = recherche.toLowerCase();
-            if (!livre.titre.toLowerCase().includes(t) &&
-                !livre.auteur.toLowerCase().includes(t)) return false;
+            if (!livre.titre.toLowerCase().includes(t) && !livre.auteur.toLowerCase().includes(t)) return false;
         }
         return true;
     });
