@@ -1,5 +1,4 @@
 // backend/src/models/livresModel.js
-//TODO: Section C — Annoter les models avec les types file:///C:/Users/Guillaume%20Beaufort/Desktop/docs/03-vendredi_ts_tp.docx.pdf
 /**
 * Accès aux données livres via PostgreSQL.
 * Remplace l'ancien livresData.js en mémoire.

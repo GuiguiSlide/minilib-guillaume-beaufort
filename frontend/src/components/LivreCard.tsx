@@ -5,12 +5,23 @@ import type { Livre } from "../types/livre";
 // On réutilise l'interface Livre du backend — cohérence garantie
 
 // Interface des props du composant
+/**
+ * Description
+ * @param {any} id:number
+ * @returns {any}
+ */
 interface LivreCardProps {
     livre: Livre;            // prop obligatoire — objet Livre complet
     onSupprimer?: (id: number) => void; // prop optionnelle — callback
 }
 
 // Le composant reçoit ses props typées
+/**
+ * Description
+ * @param {any} {livre
+ * @param {any} onSupprimer}:LivreCardProps
+ * @returns {any}
+ */
 function LivreCard({ livre, onSupprimer }: LivreCardProps) {
     return (
         <div className="livre-card">

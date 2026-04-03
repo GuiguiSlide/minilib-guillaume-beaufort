@@ -1,3 +1,8 @@
+/**
+ * Description
+ * @param {any} {plugins:[react(
+ * @returns {any}
+ */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
