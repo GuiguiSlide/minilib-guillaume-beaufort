@@ -35,3 +35,12 @@ export const desactiverAdherent = async (req:Request, res:Response): Promise<voi
             erreur: `Adhérent id:${req.params.id} introuvable` });
     res.json(adherent);
 };
+/** PUT /api/v1/adherents/:id */
+export const updateAdherent = async (req:Request, res:Response): Promise<void> => {
+    const { nom, prenom, email } = req.body;
+    const adherent = await adherentsModel.update(Number(req.params.id), { nom, prenom, email });
+    if (!adherent)
+        res.status(404).json({
+            erreur: `Adhérent id:${req.params.id} introuvable` });
+    res.json(adherent);
+};

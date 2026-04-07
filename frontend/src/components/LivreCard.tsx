@@ -1,37 +1,28 @@
-// ── frontend/src/components/LivreCard.tsx ───────────────────────
-
-import React from "react";
 import type { Livre } from "../types/livre";
-// On réutilise l'interface Livre du backend — cohérence garantie
 
-// Interface des props du composant
-/**
- * Description
- * @param {any} id:number
- * @returns {any}
- */
 interface LivreCardProps {
-    livre: Livre;            // prop obligatoire — objet Livre complet
-    onSupprimer?: (id: number) => void; // prop optionnelle — callback
+    livre: Livre;
+    onSupprimer?: (id: number) => void;
+    onEdit?: (livre: Livre) => void;
 }
 
-// Le composant reçoit ses props typées
-/**
- * Description
- * @param {any} {livre
- * @param {any} onSupprimer}:LivreCardProps
- * @returns {any}
- */
-function LivreCard({ livre, onSupprimer }: LivreCardProps) {
+function LivreCard({ livre, onSupprimer, onEdit }: LivreCardProps) {
     return (
         <div className="livre-card">
             <h3>{livre.titre}</h3>
             <p>{livre.auteur} — {livre.annee}</p>
+
             <span className={livre.disponible ? "dispo" : "emprunte"}>
                 {livre.disponible ? "Disponible" : "Emprunté"}
             </span>
-            {/* onSupprimer est optionnel — on vérifie avant d'appeler */}
-            {onSupprimer && (
+
+            {onEdit && (
+                <button onClick={() => onEdit(livre)}>
+                    Modifier
+                </button>
+            )}
+
+            {onSupprimer && livre.id !== undefined && (
                 <button onClick={() => onSupprimer(livre.id)}>
                     Supprimer
                 </button>
@@ -41,7 +32,3 @@ function LivreCard({ livre, onSupprimer }: LivreCardProps) {
 }
 
 export default LivreCard;
-
-// Utilisation — TypeScript vérifie que livre est bien un Livre :
-// <LivreCard livre={monLivre} />
-// <LivreCard livre={monLivre} onSupprimer={(id) => console.log(id)} />

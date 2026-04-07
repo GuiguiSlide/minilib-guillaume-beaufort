@@ -9,5 +9,6 @@ const router = express.Router();
 router.get('/', asyncWrapper(controller.getAdherents));
 router.get('/:id', asyncWrapper(controller.getAdherentById));
 router.post('/', asyncWrapper(controller.createAdherent));
+router.put('/:id', asyncWrapper(controller.updateAdherent));
 router.delete('/:id', asyncWrapper(controller.desactiverAdherent));
 export default router;

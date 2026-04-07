@@ -39,11 +39,12 @@ export const getLivreById = async (req: Request, res: Response): Promise<void> =
 export const createLivre = async (req: Request, res: Response): Promise<void> => {
     const { isbn, titre, auteur, annee, genre } = req.body;
     const manquants = ['isbn', 'titre', 'auteur'].filter(k => !req.body[k]);
-    if (manquants.length > 0)
-        return; 
+    if (manquants.length > 0) {
         res.status(400).json({
             erreur: 'Champs manquants', champs: manquants
         });
+        return;
+    }
     const nouveau = await livresModel.create({
         isbn, titre, auteur, annee,
         genre

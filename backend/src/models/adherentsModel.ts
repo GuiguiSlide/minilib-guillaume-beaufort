@@ -53,3 +53,21 @@ export const desactiver = async (id:number): Promise<Adherent|null> => {
     );
     return result.rows[0] || null;
 };
+/**
+* Met à jour un adhérent.
+* @async
+* @param {number} id
+* @param {Object} data - { nom?, prenom?, email? }
+* @returns {Promise<Object|null>} Adhérent mis à jour
+*/
+export const update = async (id: number, data: Partial<CreateAdherentDto>): Promise<Adherent|null> => {
+    const champs = Object.keys(data);
+    const valeurs = Object.values(data);
+    if (champs.length === 0) return findById(id);
+    const setClause = champs.map((c, i) => `${c} = $${i + 1}`).join(', ');
+    const result = await pool.query(
+        `UPDATE adherents SET ${setClause} WHERE id = $${champs.length + 1} RETURNING *`, 
+        [...valeurs, id]
+    );
+    return result.rows[0] || null;
+};
