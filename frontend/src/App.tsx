@@ -12,17 +12,37 @@ import AddAdherent from "./components/AddAdherent";
 import './App.css';
 
 const App = () => {
+  // ── STATE: Array of all books in the library
   const [livres, setLivres] = useState<Livre[]>([]);
+  
+  // ── STATE: Array of all members (adherents)
   const [adherents, setAdherents] = useState<Adherent[]>([]);
+  
+  // ── STATE: Array of all loans (emprunts)
   const [emprunts, setEmprunts] = useState<Emprunt[]>([]);
-
+  
+  // ── STATE: Filter for displaying loans by status (ALL, EN_COURS, RENDU, RETARD)
+  const [filter, setFilter] = useState<"ALL" | "EN_COURS" | "RENDU" | "RETARD">("ALL");
+  
+  // ── STATE: Holds the book currently being edited, null if none selected
   const [editingLivre, setEditingLivre] = useState<Livre | null>(null);
+  
+  // ── STATE: Holds the member currently being edited, null if none selected
   const [editingAdherent, setEditingAdherent] = useState<Adherent | null>(null);
 
   // ── LIVRES ─────────────
+
+  /**
+   * Adds a new book to the list
+   * Used when user submits the AddLivre form
+   */
   const handleAddLivre = (livre: Livre) =>
     setLivres((prev) => [...prev, livre]);
 
+  /**
+   * Deletes a book by ID from the API and removes it from state
+   * Sends DELETE request to backend and updates local state on success
+   */
   const handleDeleteLivre = (id: number) => {
     fetch(`http://localhost:5000/api/v1/livres/${id}`, { method: "DELETE" })
       .then((res) => {
@@ -32,6 +52,10 @@ const App = () => {
       .catch(console.error);
   };
 
+  /**
+   * Updates an existing book and clears the edit form
+   * Called when user saves changes to an existing book
+   */
   const handleUpdateLivre = (updated: Livre) => {
     setLivres((prev) =>
       prev.map((l) => (l.id === updated.id ? updated : l))
@@ -39,12 +63,25 @@ const App = () => {
     setEditingLivre(null);
   };
 
+  /**
+   * Cancels book editing by clearing the edit form
+   * Used when user clicks "Cancel" button on edit form
+   */
   const handleCancelEditLivre = () => setEditingLivre(null);
 
   // ── ADHERENTS ─────────
+
+  /**
+   * Adds a new member (adherent) to the list
+   * Used when user submits the AddAdherent form
+   */
   const handleAddAdherent = (adherent: Adherent) =>
     setAdherents((prev) => [...prev, adherent]);
 
+  /**
+   * Deletes a member by ID from the API and removes it from state
+   * Sends DELETE request to backend and updates local state on success
+   */
   const handleDeleteAdherent = (id: number) => {
     fetch(`http://localhost:5000/api/v1/adherents/${id}`, { method: "DELETE" })
       .then((res) => {
@@ -54,6 +91,10 @@ const App = () => {
       .catch(console.error);
   };
 
+  /**
+   * Updates an existing member and clears the edit form
+   * Called when user saves changes to an existing member
+   */
   const handleUpdateAdherent = (updated: Adherent) => {
     setAdherents((prev) =>
       prev.map((a) => (a.id === updated.id ? updated : a))
@@ -61,25 +102,26 @@ const App = () => {
     setEditingAdherent(null);
   };
 
+  /**
+   * Cancels member editing by clearing the edit form
+   * Used when user clicks "Cancel" button on edit form
+   */
   const handleCancelEditAdherent = () => setEditingAdherent(null);
 
   // ── EMPRUNTS ─────────
 
   /**
-   * CREATE emprunt
-   * Only updates emprunts state.
-   * Livre availability is handled by backend.
+   * Adds a new loan (emprunt) to the list
+   * Called when a member borrows a book
    */
   const handleAddEmprunt = (emprunt: Emprunt) => {
     setEmprunts((prev) => [...prev, emprunt]);
-
-    // IMPORTANT:
-    // DO NOT update livres.disponible here anymore.
-    // Backend is the single source of truth.
   };
 
   /**
-   * RETURN emprunt (backend-driven)
+   * Returns a borrowed book (marks it as returned in the API)
+   * Updates the loan with the current return date and notifies the backend
+   * @async - makes a PUT request to backend
    */
   const handleReturnEmprunt = async (id: number) => {
     try {
@@ -103,16 +145,33 @@ const App = () => {
       setEmprunts((prev) =>
         prev.map((e) => (e.id === id ? updated : e))
       );
-
-      // IMPORTANT:
-      // DO NOT update livres here anymore.
-      // Backend already updated availability.
     } catch (err) {
       console.error(err);
     }
   };
 
-  // ── FETCH DATA
+  // ── DERIVED STATE (FILTERING) ─────────
+  /**
+   * Filters the emprunts array based on selected filter status
+   * - ALL: shows all loans
+   * - EN_COURS: shows active loans (not returned)
+   * - RENDU: shows returned loans
+   * - RETARD: shows loans that are overdue
+   */
+  const filteredEmprunts = emprunts.filter((e) => {
+    if (filter === "ALL") return true;
+    if (filter === "EN_COURS") return !e.date_retour_effective;
+    if (filter === "RENDU") return Boolean(e.date_retour_effective);
+    if (filter === "RETARD") return Boolean(e.en_retard);
+    return (e.statut?.trim?.() ?? "") === filter;
+  });
+
+  // ── FETCH DATA ─────────
+  /**
+   * Loads initial data from the backend when component mounts
+   * Fetches books, members, and loans from the API
+   * Runs once on component mount (empty dependency array)
+   */
   useEffect(() => {
     fetch('http://localhost:5000/api/v1/livres')
       .then((res) => res.json())
@@ -168,8 +227,17 @@ const App = () => {
             onCancel={handleCancelEditAdherent}
           />
 
+          <div>
+            <h3>Filtres emprunts</h3>
+
+            <button onClick={() => setFilter("ALL")}>Tous</button>
+            <button onClick={() => setFilter("EN_COURS")}>En cours</button>
+            <button onClick={() => setFilter("RENDU")}>Rendus</button>
+            <button onClick={() => setFilter("RETARD")}>En retard</button>
+          </div>
+
           <ListeEmprunts
-            emprunts={emprunts}
+            emprunts={filteredEmprunts}
             onReturn={handleReturnEmprunt}
             onAdd={handleAddEmprunt}
           />

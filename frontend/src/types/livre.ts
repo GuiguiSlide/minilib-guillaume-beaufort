@@ -1,8 +1,17 @@
-// backend/src/types/livre.ts
+// ── Livre Type Definitions ──
+// Interfaces for books in the library system
+
 /**
-* Représente un livre dans le catalogue MiniLib.
-* Correspond à la table livres dans PostgreSQL.
-* */
+ * Represents a book in the MiniLib catalog
+ * Corresponds to the livres table in PostgreSQL
+ * @prop id - Unique identifier (SERIAL PRIMARY KEY)
+ * @prop isbn - International Standard Book Number
+ * @prop titre - Book title
+ * @prop auteur - Book author
+ * @prop annee - Publication year
+ * @prop genre - Book genre/category
+ * @prop disponible - Whether the book is available to borrow
+ */
 export interface Livre {
     id: number;
     isbn: string;
@@ -12,9 +21,11 @@ export interface Livre {
     genre: string;
     disponible: boolean;
 }
+
 /**
-* Données pour créer un livre — sans id (SERIAL PostgreSQL) ni disponible (true par défaut).
-*/
+ * Data structure for creating a new book
+ * Excludes id (auto-generated) and disponible (defaults to true)
+ */
 export interface CreateLivreDto {
     isbn: string;
     titre: string;
@@ -22,9 +33,10 @@ export interface CreateLivreDto {
     annee?: number;
     genre?: string;
 }
+
 /**
-* Filtres optionnels pour la liste des livres.
-*/
+ * Optional filters for fetching/searching books
+ */
 export interface FiltresLivre {
     genre?: string;
     disponible?: boolean;

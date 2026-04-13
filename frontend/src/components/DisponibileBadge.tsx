@@ -1,7 +1,12 @@
-// ── frontend/src/components/DisponibileBadge.tsx ────────────────
+// ── DisponibileBadge Component ──
+// A simple pure component that displays availability status
+// Currently hardcoded, but can be enhanced to accept availability as a prop
 
-// Composant le plus simple : une fonction qui retourne du JSX
-// Pas de props pour l'instant — tout est codé en dur
+/**
+ * DisponibileBadge
+ * Renders a "Disponible" (Available) badge with green styling
+ * @returns JSX element displaying availability status
+ */
 function DisponibileBadge() {
     return (
         <span style={{ color: "green" }}>

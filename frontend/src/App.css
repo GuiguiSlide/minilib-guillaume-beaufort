@@ -11,6 +11,7 @@
   &:hover {
     border-color: var(--accent-border);
   }
+
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
@@ -42,8 +43,7 @@
     z-index: 1;
     top: 34px;
     height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg) scale(1.4);
   }
 
   .vite {
@@ -51,8 +51,7 @@
     top: 107px;
     height: 26px;
     width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg) scale(0.8);
   }
 }
 
@@ -69,6 +68,7 @@
     gap: 18px;
   }
 }
+
 #background {
   position: absolute;
   top: 0;
@@ -78,10 +78,12 @@
   background: linear-gradient(to bottom right, #ad52ee, #2b002b);
   z-index: -10;
 }
-h1{
+
+h1 {
   display: flex;
   justify-self: center;
 }
+
 #listes {
   display: flex;
   justify-content: space-around;
@@ -92,17 +94,20 @@ h1{
   padding-top: 20px;
   padding-bottom: 20px;
 }
-ListeLivres{
+
+ListeLivres {
   color: red;
 }
+
 #next-steps {
   display: flex;
   border-top: 1px solid var(--border);
   text-align: left;
 
-  & > div {
+  &>div {
     flex: 1 1 0;
     padding: 32px;
+
     @media (max-width: 1024px) {
       padding: 24px 20px;
     }
@@ -128,6 +133,7 @@ ListeLivres{
     border-bottom: 1px solid var(--border);
   }
 }
+
 #requestlist {
   display: flex;
   justify-content: space-around;
@@ -138,24 +144,27 @@ ListeLivres{
   padding-top: 20px;
   padding-bottom: 20px;
 }
-#request{
+
+#request {
   display: flex;
   flex-direction: row;
   gap: 16px;
   background-color: black;
-  color:white;
+  color: white;
 }
+
 #cards {
   display: flex;
   flex-direction: column;
   gap: 16px;
   background-color: black;
-  color:white;
+  color: white;
   overflow-y: auto;
   border: 2px solid;
   max-height: 500px;
   padding: 16px;
 }
+
 #next-steps ul {
   list-style: none;
   padding: 0;
@@ -182,6 +191,7 @@ ListeLivres{
     &:hover {
       box-shadow: var(--shadow);
     }
+
     .button-icon {
       height: 18px;
       width: 18px;
@@ -208,6 +218,7 @@ ListeLivres{
 #spacer {
   height: 88px;
   border-top: 1px solid var(--border);
+
   @media (max-width: 1024px) {
     height: 48px;
   }
@@ -229,6 +240,7 @@ ListeLivres{
     left: 0;
     border-left-color: var(--border);
   }
+
   &::after {
     right: 0;
     border-right-color: var(--border);

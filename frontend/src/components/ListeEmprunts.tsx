@@ -1,6 +1,16 @@
+// ── ListeEmprunts Component ──
+// Displays list of all loans and provides form to create new loans
+// Handles both display and creation of loan records
+
 import { useState } from "react";
 import type { Emprunt } from "../types/emprunt";
 
+/**
+ * Props for ListeEmprunts component
+ * @prop emprunts - Array of loans to display (already filtered by parent)
+ * @prop onReturn - Callback when "Rendre" (return) button is clicked on a loan
+ * @prop onAdd - Callback when a new loan is successfully created
+ */
 interface ListeEmpruntsProps {
   emprunts: Emprunt[];
   onReturn: (id: number) => void;
@@ -9,41 +19,42 @@ interface ListeEmpruntsProps {
 
 /**
  * ListeEmprunts
- *
- * Responsibilities:
- * - Display list of emprunts
- * - Handle "return" action (delegated to parent)
- * - Handle creation of a new emprunt via API
- *
- * Important:
- * - Does NOT mutate global state directly
- * - Uses onAdd callback to update App.tsx state
- * - Handles backend errors (business logic)
+ * Displays:
+ * 1. Form to create new loans (requires livre ID and adherent ID)
+ * 2. List of all loans with status and return button
+ * 
+ * Does NOT mutate global state directly
+ * Uses onAdd callback to notify parent of new loans
  */
 const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
   // ── FORM STATE ─────────────────────
+  // livre_id: ID of the book being borrowed (can be empty string or number)
   const [livreId, setLivreId] = useState<number | "">("");
+  
+  // adherent_id: ID of the member borrowing the book (can be empty string or number)
   const [adherentId, setAdherentId] = useState<number | "">("");
+  
+  // error: Error message to display if creation fails
   const [error, setError] = useState<string | null>(null);
 
   /**
-   * handleCreate
-   *
-   * Sends POST request to backend to create a new emprunt.
-   * - Validates input
-   * - Handles API errors
-   * - Calls onAdd to update parent state
+   * Creates a new loan via API
+   * Validates that both livre_id and adherent_id are provided
+   * Handles API errors and displays them to the user
+   * Resets form on success and notifies parent via onAdd callback
    */
   const handleCreate = async () => {
+    // ── RESET ERROR STATE ──
     setError(null);
 
-    // Basic validation
+    // ── VALIDATION: Both fields must be filled ──
     if (livreId === "" || adherentId === "") {
       setError("Veuillez remplir tous les champs");
       return;
     }
 
     try {
+      // ── API CALL: Send POST request to create new loan ──
       const res = await fetch("http://localhost:5000/api/v1/emprunts", {
         method: "POST",
         headers: {
@@ -55,19 +66,18 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
         }),
       });
 
-      // Handle backend error response
+      // ── ERROR HANDLING: Check if request failed ──
       if (!res.ok) {
         const err = await res.json();
         setError(err.erreur || "Erreur lors de la création");
         return;
       }
 
+      // ── SUCCESS: Parse response and update parent state ──
       const data: Emprunt = await res.json();
-
-      // Update global state via App.tsx
       onAdd(data);
 
-      // Reset form
+      // ── RESET FORM: Clear fields for next entry ──
       setLivreId("");
       setAdherentId("");
     } catch (err) {
@@ -80,10 +90,11 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
     <div>
       <h2>Liste des emprunts</h2>
 
-      {/* ── CREATE FORM ───────────────────── */}
+      {/* ── CREATE FORM SECTION ───────────────────── */}
       <div>
         <h3>Créer un emprunt</h3>
 
+        {/* ── LIVRE ID INPUT ── */}
         <input
           type="number"
           placeholder="Livre ID"
@@ -94,6 +105,7 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
           }}
         />
 
+        {/* ── ADHERENT ID INPUT ── */}
         <input
           type="number"
           placeholder="Adherent ID"
@@ -104,20 +116,27 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
           }}
         />
 
+        {/* ── SUBMIT BUTTON ── */}
         <button onClick={handleCreate}>Ajouter</button>
 
+        {/* ── ERROR MESSAGE DISPLAY ── */}
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
 
-      {/* ── LIST DISPLAY ───────────────────── */}
+      {/* ── LIST DISPLAY SECTION ───────────────────── */}
+      
+      {/* ── EMPTY STATE ── */}
       {emprunts.length === 0 && <p>Aucun emprunt</p>}
 
+      {/* ── LOANS LIST ── */}
       <ul>
         {emprunts.map((e) => (
           <li key={e.id}>
+            {/* ── LOAN INFO ── */}
             Livre ID: {e.livre_id} | Adherent ID: {e.adherent_id} |{" "}
             {e.date_retour_effective ? "Rendu" : "En cours"}
 
+            {/* ── RETURN BUTTON (only shown for active loans) ── */}
             {!e.date_retour_effective && (
               <button onClick={() => onReturn(e.id)}>
                 Rendre
