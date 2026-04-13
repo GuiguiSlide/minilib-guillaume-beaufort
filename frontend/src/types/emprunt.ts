@@ -4,8 +4,11 @@ export interface Emprunt {
     livre_id: number;
     adherent_id: number;
     date_emprunt: string;
-    date_retour_prevue: string;
     date_retour_effective: string | null;
+    en_retard: boolean;
+    livre_titre: string;
+    adherent_nom: string;
+    statut: "EN_COURS" | "RENDU";
 }
 // Interface enrichie avec les données des JOINs SQL
 export interface EmpruntAvecDetails extends Emprunt {

@@ -9,7 +9,7 @@ interface LivreCardProps {
 function LivreCard({ livre, onSupprimer, onEdit }: LivreCardProps) {
     return (
         <div className="livre-card">
-            <h3>{livre.titre}</h3>
+            <h3>{livre.titre} - id:{livre.id}</h3>
             <p>{livre.auteur} — {livre.annee}</p>
 
             <span className={livre.disponible ? "dispo" : "emprunte"}>

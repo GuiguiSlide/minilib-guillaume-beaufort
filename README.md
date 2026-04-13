@@ -5,6 +5,7 @@ MiniLib est une petite bibliothèque qui fournit une API REST pour gérer des li
 
 Ce projet utilise Node.js, Express et PostgreSQL comme base de données.
 
+
 ## Installation et lancement
 
 1. Cloner le projet avec `git clone https://github.com/Guigui-Slide/minilib.git`
@@ -17,7 +18,9 @@ Ce projet utilise Node.js, Express et PostgreSQL comme base de données.
 	* `DB_PASSWORD` : mot de passe de l'utilisateur de la base de données PostgreSQL
 4. Exécuter le schéma de la base de données avec `psql -U minilib_user -d minilib -f database/schema.sql`
 5. Exécuter les données de test avec `psql -U minilib_user -d minilib -f database/seed.sql`
-6. Lancer le serveur avec `npm run dev`
+6. Lancer le serveur avec `npm run dev` dans le frontend
+7. Lancer le serveur avec `npm run dev` dans le backend
+8. aller sur l'ip du frontend
 
 ## Utilisation de l'API
 

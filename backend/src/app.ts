@@ -7,6 +7,7 @@ import cors from 'cors';
 // Import des routeurs (on les créera juste après)
 import livresRouter from './routes/livres.js';
 import adherentsRouter from './routes/adherents.js';
+import empruntsRoutes from './routes/emprunts.js';
 // ── Initialisation de l'application Express ──────────────────────────
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -31,6 +32,8 @@ app.use('/api/v1/livres', livresRouter);
 
 // Toutes les routes d'adhérents seront préfixées par /api/v1/adherents
 app.use('/api/v1/adherents', adherentsRouter);
+
+app.use('/api/v1/emprunts', empruntsRoutes);
 
 
 // Route de santé — permet de vérifier que le serveur tourne
