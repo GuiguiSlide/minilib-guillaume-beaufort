@@ -12,7 +12,7 @@ import empruntsRoutes from './routes/emprunts.js';
 
 // ── EXPRESS APP INITIALIZATION ──
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT|| 5000; // Default to 5000 if PORT not set in .env
 
 // ── GLOBAL MIDDLEWARES ──
 /**
@@ -117,7 +117,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
  * Logs startup information to console
  */
 app.listen(PORT, () => {
-    console.log(`Serveur MiniLib démarré sur http://localhost:${PORT}`);
+    console.log(`Serveur MiniLib démarré sur http://0.0.0.0:${PORT}`);
     console.log(`Environnement : ${process.env.NODE_ENV}`);
 });
 
