@@ -19,7 +19,10 @@ export interface Emprunt {
     livre_id: number;
     adherent_id: number;
     date_emprunt: string;
+    date_retour_prevue: string; // ✅ ADD THIS
     date_retour_effective: string | null;
+
+    // keep if backend sends them, but stop trusting them
     en_retard: boolean;
     livre_titre: string;
     adherent_nom: string;

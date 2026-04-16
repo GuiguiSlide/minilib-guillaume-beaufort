@@ -14,22 +14,23 @@ import './App.css';
 const App = () => {
   // ── STATE: Array of all books in the library
   const [livres, setLivres] = useState<Livre[]>([]);
-  
+
   // ── STATE: Array of all members (adherents)
   const [adherents, setAdherents] = useState<Adherent[]>([]);
-  
+
   // ── STATE: Array of all loans (emprunts)
   const [emprunts, setEmprunts] = useState<Emprunt[]>([]);
-  
+
   // ── STATE: Filter for displaying loans by status (ALL, EN_COURS, RENDU, RETARD)
   const [filter, setFilter] = useState<"ALL" | "EN_COURS" | "RENDU" | "RETARD">("ALL");
-  
+
   // ── STATE: Holds the book currently being edited, null if none selected
   const [editingLivre, setEditingLivre] = useState<Livre | null>(null);
-  
+
   // ── STATE: Holds the member currently being edited, null if none selected
   const [editingAdherent, setEditingAdherent] = useState<Adherent | null>(null);
 
+  const now = new Date();
   // ── LIVRES ─────────────
 
   /**
@@ -159,11 +160,34 @@ const App = () => {
    * - RETARD: shows loans that are overdue
    */
   const filteredEmprunts = emprunts.filter((e) => {
+    const returned = e.date_retour_effective !== null && e.date_retour_effective !== "";
+    const datePrevue = new Date(e.date_retour_prevue);
+    const isLate = !returned && datePrevue < now;
+
     if (filter === "ALL") return true;
-    if (filter === "EN_COURS") return !e.date_retour_effective;
-    if (filter === "RENDU") return Boolean(e.date_retour_effective);
-    if (filter === "RETARD") return Boolean(e.en_retard);
-    return (e.statut?.trim?.() ?? "") === filter;
+    if (filter === "RENDU") return returned;
+    if (filter === "RETARD") return isLate;
+    if (filter === "EN_COURS") return !returned && !isLate;
+
+    return true;
+  });
+
+  // ── DERIVED BOOK AVAILABILITY ─────────
+  /**
+   * Adds availability status to each book
+   * Marks a book as borrowed if there's an active loan for it
+   */
+  const livresAvecDisponibilite = livres.map((livre) => {
+    const isBorrowed = emprunts.some(
+      (e) =>
+        e.livre_id === livre.id &&
+        !e.date_retour_effective
+    );
+
+    return {
+      ...livre,
+      disponible: !isBorrowed,
+    };
   });
 
   // ── FETCH DATA ─────────
@@ -196,7 +220,7 @@ const App = () => {
       <div id="listes">
         <div id="cards">
           <ListeLivres
-            livres={livres}
+            livres={livresAvecDisponibilite}
             onDelete={handleDeleteLivre}
             onEdit={setEditingLivre}
           />

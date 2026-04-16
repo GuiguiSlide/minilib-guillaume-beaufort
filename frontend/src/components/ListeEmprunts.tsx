@@ -30,10 +30,10 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
   // ── FORM STATE ─────────────────────
   // livre_id: ID of the book being borrowed (can be empty string or number)
   const [livreId, setLivreId] = useState<number | "">("");
-  
+
   // adherent_id: ID of the member borrowing the book (can be empty string or number)
   const [adherentId, setAdherentId] = useState<number | "">("");
-  
+
   // error: Error message to display if creation fails
   const [error, setError] = useState<string | null>(null);
 
@@ -46,7 +46,25 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
   const handleCreate = async () => {
     // ── RESET ERROR STATE ──
     setError(null);
+    const activeEmprunts = emprunts.filter(
+      (e) => !e.date_retour_effective
+    );
+    const userLoans = activeEmprunts.filter(
+      (e) => e.adherent_id === adherentId
+    );
 
+    if (userLoans.length >= 3) {
+      setError("Cet adhérent a déjà 3 emprunts actifs");
+      return;
+    }
+    const bookAlreadyBorrowed = activeEmprunts.some(
+      (e) => e.livre_id === livreId
+    );
+
+    if (bookAlreadyBorrowed) {
+      setError("Ce livre est déjà emprunté");
+      return;
+    }
     // ── VALIDATION: Both fields must be filled ──
     if (livreId === "" || adherentId === "") {
       setError("Veuillez remplir tous les champs");
@@ -124,7 +142,7 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
       </div>
 
       {/* ── LIST DISPLAY SECTION ───────────────────── */}
-      
+
       {/* ── EMPTY STATE ── */}
       {emprunts.length === 0 && <p>Aucun emprunt</p>}
 
@@ -133,7 +151,7 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
         {emprunts.map((e) => (
           <li key={e.id}>
             {/* ── LOAN INFO ── */}
-            Livre ID: {e.livre_id} | Adherent ID: {e.adherent_id} |{" "}
+            Livre titre: {e.livre_titre} |Livre ID: {e.livre_id} |Adherent nom: {e.adherent_nom} | Adherent ID: {e.adherent_id} |{" "}
             {e.date_retour_effective ? "Rendu" : "En cours"}
 
             {/* ── RETURN BUTTON (only shown for active loans) ── */}

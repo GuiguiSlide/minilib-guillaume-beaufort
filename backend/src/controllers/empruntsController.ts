@@ -8,13 +8,13 @@ import * as empruntsModel from '../models/empruntsModel.js';
 
 /**
  * GET /api/v1/emprunts
- * Fetches all loans (basic query without JOINs)
+ * Fetches all loans with detailed information (titles and names via JOINs)
  * @param req - Express request object
  * @param res - Response returning array of loans
  */
 export const getEmprunts = async (req: Request, res: Response): Promise<void> => {
-    // ── FETCH ALL LOANS FROM DATABASE ──
-    const emprunts = await empruntsModel.findAll();
+    // ── FETCH ALL LOANS FROM DATABASE WITH DETAILS ──
+    const emprunts = await empruntsModel.findAllDetailed();
     
     // ── RETURN RESPONSE ──
     res.json(emprunts);
