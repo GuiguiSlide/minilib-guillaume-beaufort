@@ -161,8 +161,17 @@ const App = () => {
    */
   const filteredEmprunts = emprunts.filter((e) => {
     const returned = e.date_retour_effective !== null && e.date_retour_effective !== "";
-    const datePrevue = new Date(e.date_retour_prevue);
-    const isLate = !returned && datePrevue < now;
+    
+    // Only check for late if we have a valid due date
+    let isLate = false;
+    if (!returned && e.date_retour_prevue) {
+      const dueDate = new Date(e.date_retour_prevue).getTime();
+      isLate = dueDate < now.getTime();
+      // Debug: log late loans
+      if (isLate) {
+        console.log('Late loan found:', e.livre_titre, 'Due:', e.date_retour_prevue, 'Now:', now.toISOString());
+      }
+    }
 
     if (filter === "ALL") return true;
     if (filter === "RENDU") return returned;

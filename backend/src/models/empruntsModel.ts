@@ -117,7 +117,7 @@ SELECT
     e.adherent_id,
     e.date_emprunt,
     e.date_retour_effective,
-
+    e.date_retour_prevue,
     l.titre AS livre_titre,
     a.nom AS adherent_nom,
 
