@@ -1,3 +1,4 @@
+
 // ── ListeEmprunts Component ──
 // Displays list of all loans and provides form to create new loans
 // Handles both display and creation of loan records
@@ -8,8 +9,8 @@ import type { Emprunt } from "../types/emprunt";
 /**
  * Props for ListeEmprunts component
  * @prop emprunts - Array of loans to display (already filtered by parent)
- * @prop onReturn - Callback when "Rendre" (return) button is clicked on a loan
- * @prop onAdd - Callback when a new loan is successfully created
+ * @prop onReturn - Callback when "Rendre" button is clicked
+ * @prop onAdd - Callback when a new loan is created
  */
 interface ListeEmpruntsProps {
   emprunts: Emprunt[];
@@ -19,36 +20,52 @@ interface ListeEmpruntsProps {
 
 /**
  * ListeEmprunts
- * Displays:
- * 1. Form to create new loans (requires livre ID and adherent ID)
- * 2. List of all loans with status and return button
- * 
- * Does NOT mutate global state directly
- * Uses onAdd callback to notify parent of new loans
  */
 const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
   // ── FORM STATE ─────────────────────
-  // livre_id: ID of the book being borrowed (can be empty string or number)
   const [livreId, setLivreId] = useState<number | "">("");
-
-  // adherent_id: ID of the member borrowing the book (can be empty string or number)
   const [adherentId, setAdherentId] = useState<number | "">("");
-
-  // error: Error message to display if creation fails
   const [error, setError] = useState<string | null>(null);
 
   /**
+   * Calculates remaining days until due date.
+   * Uses backend-provided date_retour_prevue as source of truth.
+   */
+  const getRemainingDays = (dueDateString: string) => {
+    const dueDate = new Date(dueDateString);
+    const today = new Date();
+
+    const diffMs = dueDate.getTime() - today.getTime();
+
+    const diffDays = Math.ceil(
+      diffMs / (1000 * 60 * 60 * 24)
+    );
+
+    if (diffDays > 1) {
+      return `${diffDays} jours restants`;
+    }
+
+    if (diffDays === 1) {
+      return "Dernier jour";
+    }
+
+    if (diffDays === 0) {
+      return "Expire aujourd'hui";
+    }
+
+    return `En retard de ${Math.abs(diffDays)} jours`;
+  };
+
+  /**
    * Creates a new loan via API
-   * Validates that both livre_id and adherent_id are provided
-   * Handles API errors and displays them to the user
-   * Resets form on success and notifies parent via onAdd callback
    */
   const handleCreate = async () => {
-    // ── RESET ERROR STATE ──
     setError(null);
+
     const activeEmprunts = emprunts.filter(
       (e) => !e.date_retour_effective
     );
+
     const userLoans = activeEmprunts.filter(
       (e) => e.adherent_id === adherentId
     );
@@ -57,6 +74,7 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
       setError("Cet adhérent a déjà 3 emprunts actifs");
       return;
     }
+
     const bookAlreadyBorrowed = activeEmprunts.some(
       (e) => e.livre_id === livreId
     );
@@ -65,14 +83,13 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
       setError("Ce livre est déjà emprunté");
       return;
     }
-    // ── VALIDATION: Both fields must be filled ──
+
     if (livreId === "" || adherentId === "") {
       setError("Veuillez remplir tous les champs");
       return;
     }
 
     try {
-      // ── API CALL: Send POST request to create new loan ──
       const res = await fetch("http://localhost:5000/api/v1/emprunts", {
         method: "POST",
         headers: {
@@ -84,18 +101,15 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
         }),
       });
 
-      // ── ERROR HANDLING: Check if request failed ──
       if (!res.ok) {
         const err = await res.json();
         setError(err.erreur || "Erreur lors de la création");
         return;
       }
 
-      // ── SUCCESS: Parse response and update parent state ──
       const data: Emprunt = await res.json();
       onAdd(data);
 
-      // ── RESET FORM: Clear fields for next entry ──
       setLivreId("");
       setAdherentId("");
     } catch (err) {
@@ -108,11 +122,9 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
     <div>
       <h2>Liste des emprunts</h2>
 
-      {/* ── CREATE FORM SECTION ───────────────────── */}
       <div>
         <h3>Créer un emprunt</h3>
 
-        {/* ── LIVRE ID INPUT ── */}
         <input
           type="number"
           placeholder="Livre ID"
@@ -123,7 +135,6 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
           }}
         />
 
-        {/* ── ADHERENT ID INPUT ── */}
         <input
           type="number"
           placeholder="Adherent ID"
@@ -134,27 +145,42 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
           }}
         />
 
-        {/* ── SUBMIT BUTTON ── */}
         <button onClick={handleCreate}>Ajouter</button>
 
-        {/* ── ERROR MESSAGE DISPLAY ── */}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && (
+          <p style={{ color: "red" }}>
+            {error}
+          </p>
+        )}
       </div>
 
-      {/* ── LIST DISPLAY SECTION ───────────────────── */}
-
-      {/* ── EMPTY STATE ── */}
       {emprunts.length === 0 && <p>Aucun emprunt</p>}
 
-      {/* ── LOANS LIST ── */}
       <ul>
         {emprunts.map((e) => (
           <li key={e.id}>
-            {/* ── LOAN INFO ── */}
-            Livre titre: {e.livre_titre} |Livre ID: {e.livre_id} |Adherent nom: {e.adherent_nom} | Adherent ID: {e.adherent_id} |{" "}
-            {e.date_retour_effective ? "Rendu" : "En cours"}
+            Livre titre: {e.livre_titre} |
+            Livre ID: {e.livre_id} |
+            Adherent nom: {e.adherent_nom} |
+            Adherent ID: {e.adherent_id} |
 
-            {/* ── RETURN BUTTON (only shown for active loans) ── */}
+            {e.date_retour_effective ? (
+              " Rendu"
+            ) : (
+              <>
+                {" "}En cours |
+                <span
+                  style={{
+                    color: e.en_retard ? "red" : "green",
+                    fontWeight: "bold",
+                    marginLeft: "5px"
+                  }}
+                >
+                  {getRemainingDays(e.date_retour_prevue)}
+                </span>
+              </>
+            )}
+
             {!e.date_retour_effective && (
               <button onClick={() => onReturn(e.id)}>
                 Rendre
@@ -168,3 +194,4 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
 };
 
 export default ListeEmprunts;
+

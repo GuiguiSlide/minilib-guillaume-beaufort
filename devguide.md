@@ -27,3 +27,4 @@ minilib/
 
 # bruno c'est un faux frontend pour tester le backend
 
+TODO: https://drive.google.com/file/d/1ZeUPT1kK9xHyq_NF7W8t_E6bJuYErQyc/view section F vps
