@@ -157,7 +157,7 @@ const ListeEmprunts = ({ emprunts, onReturn, onAdd }: ListeEmpruntsProps) => {
         </span>
 
         <span style={{ marginLeft: 20 }}>
-          Live: {now.toLocaleTimeString()}
+          heure actuelle {now.toLocaleTimeString()}
         </span>
       </div>
 

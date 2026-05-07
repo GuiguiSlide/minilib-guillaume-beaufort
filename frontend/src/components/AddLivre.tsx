@@ -123,59 +123,62 @@ const AddLivre: React.FC<AddLivreProps> = ({
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            {/* ── TITLE INPUT ── */}
-            <input
-                type="text"
-                placeholder="Titre (ex: Le Seigneur des Anneaux)"
-                value={titre}
-                onChange={(e) => setTitre(e.target.value)}
-                required
-            />
-            
-            {/* ── AUTHOR INPUT ── */}
-            <input
-                type="text"
-                placeholder="Auteur (ex: J.R.R. Tolkien)"
-                value={auteur}
-                onChange={(e) => setAuteur(e.target.value)}
-                required
-            />
-            
-            {/* ── YEAR INPUT ── */}
-            <input
-                type="number"
-                placeholder="Année (ex: 1954)"
-                value={annee}
-                onChange={(e) => setAnnee(e.target.value)}
-            />
-            
-            {/* ── ISBN INPUT ── */}
-            <input
-                type="text"
-                placeholder="ISBN (ex: 9782253045939 - optionnel)"
-                value={isbn}
-                onChange={(e) => setIsbn(e.target.value)}
-            />
-            
-            {/* ── GENRE INPUT ── */}
-            <input
-                type="text"
-                placeholder="Genre (ex: Fantasy)"
-                value={genre}
-                onChange={(e) => setGenre(e.target.value)}
-            />
-            
-            {/* ── SUBMIT BUTTON (text changes based on mode) ── */}
-            <button type="submit">{livreToEdit ? "Modifier" : "Ajouter"}</button>
-            
-            {/* ── CANCEL BUTTON (only visible in edit mode) ── */}
-            {livreToEdit && onCancel && (
-                <button type="button" onClick={onCancel}>
-                    Annuler
-                </button>
-            )}
-        </form>
+        <div>
+            <h2>{livreToEdit ? "Modifier le livre" : "Ajouter un nouveau livre"}</h2>
+            <form onSubmit={handleSubmit}>
+                {/* ── TITLE INPUT ── */}
+                <input
+                    type="text"
+                    placeholder="Titre (ex: Le Seigneur des Anneaux)"
+                    value={titre}
+                    onChange={(e) => setTitre(e.target.value)}
+                    required
+                />
+
+                {/* ── AUTHOR INPUT ── */}
+                <input
+                    type="text"
+                    placeholder="Auteur (ex: J.R.R. Tolkien)"
+                    value={auteur}
+                    onChange={(e) => setAuteur(e.target.value)}
+                    required
+                />
+
+                {/* ── YEAR INPUT ── */}
+                <input
+                    type="number"
+                    placeholder="Année (ex: 1954)"
+                    value={annee}
+                    onChange={(e) => setAnnee(e.target.value)}
+                />
+
+                {/* ── ISBN INPUT ── */}
+                <input
+                    type="text"
+                    placeholder="ISBN (ex: 9782253045939 - optionnel)"
+                    value={isbn}
+                    onChange={(e) => setIsbn(e.target.value)}
+                />
+
+                {/* ── GENRE INPUT ── */}
+                <input
+                    type="text"
+                    placeholder="Genre (ex: Fantasy)"
+                    value={genre}
+                    onChange={(e) => setGenre(e.target.value)}
+                />
+
+                {/* ── SUBMIT BUTTON (text changes based on mode) ── */}
+                <button type="submit">{livreToEdit ? "Modifier" : "Ajouter"}</button>
+
+                {/* ── CANCEL BUTTON (only visible in edit mode) ── */}
+                {livreToEdit && onCancel && (
+                    <button type="button" onClick={onCancel}>
+                        Annuler
+                    </button>
+                )}
+            </form>
+        </div>
     );
 };
 
